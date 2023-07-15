@@ -1,0 +1,89 @@
+
+{% extends 'administradores/../../administrativos/home/view_home_administradores.html' %}
+
+{% block content %}
+    <div class="card-header mb-1 bg-success">
+        <h1 class="text-center">Ficha medica | Contacto de emergencia</h1>
+    </div>
+    <main class="container">
+
+        <form method="post" class="row g-3 mt-5 gap-2">
+            {% csrf_token %}
+
+            {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+
+            {% else %}
+                {% if mensaje %}
+                    <div class="alert alert-success" role="alert">
+                        {{ mensaje }}
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <section class="col-md-6 row">
+                <h2 class="text-white text-center mb-3">Ficha médica</h2>
+
+                <div class="col-md-6 mb-3">
+                    <label for="tipoSangre" class="form-label text-white">Tipo de sangre: {{ tipo_sangre }}</label>
+                    <select name="tipo_sangre" required class="form-select" id="tipoSangre">
+                        <option value="" selected>Seleccione una opción</option>
+                        <option value="A+">A+</option>
+                        <option value="O+">O+</option>
+                        <option value="B+">B+</option>
+                        <option value="AB+">AB+</option>
+                        <option value="A-">A-</option>
+                        <option value="O-">O-</option>
+                        <option value="B-">B-</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="inputAlergias" class="form-label text-white">Alergias:</label>
+                    <input name="alergias" required type="text" class="form-control" id="inputAlergias"
+                           placeholder="Escriba sus alergias" value="{{ alergias }}">
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label for="inputEnfermedades" class="form-label text-white">Enfermedades:</label>
+                    <input name="enfermedades" required type="text" class="form-control" id="inputEnfermedades"
+                           placeholder="Escriba sus enfermedades" value="{{ enfermedades }}">
+                </div>
+
+            </section>
+
+            <section class="col-md-6 row">
+                <h2 class="text-white text-center mb-3">Contacto de emergencia</h2>
+
+                <div class="col-md-12 mb-3">
+                    <label for="inputNombre" class="form-label text-white">Nombre del contacto:</label>
+                    <input name="nombre_contacto_emergencia" required type="text" class="form-control" id="inputNombre"
+                           placeholder="Escriba el nombre del contacto de emergencia" value="{{ nombre_contacto_emergencia }}">
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label for="inputTelefono" class="form-label text-white">Teléfono:</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                        <input name="numero_contacto_emergencia" required type="tel" class="form-control" id="inputTelefono"
+                               placeholder="Escriba el teléfono del contacto de emergencia"
+                               value="{{ numero_contacto_emergencia }}">
+                    </div>
+                </div>
+            </section>
+
+
+            <div class="col-12 mt-5">
+                <center>
+                    <button type="submit" class="btn btn-primary btn-lg fade-in">
+                        Actualizar datos
+                    </button>
+
+                </center>
+            </div>
+        </form>
+    </main>
+{% endblock %}

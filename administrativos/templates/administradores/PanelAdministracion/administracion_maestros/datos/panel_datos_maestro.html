@@ -1,0 +1,144 @@
+{% extends 'administradores/layouts/view_home_administradores.html' %}
+
+{% block content %}
+
+    <main>
+        <h1 class="text-center">Lista de profesores</h1>
+
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6 offset-md-3">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="email" placeholder="Buscar por email"
+                                   required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            {% if usuario %}
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h2 class="text-center">Resultado de la búsqueda</h2>
+                                <h5 class="card-title text-center">{{ usuario.nombre }} {{ usuario.apellidos }}</h5>
+                                <p class="card-text"><strong>Especialidad:</strong> {{ usuario.especialidad }}</p>
+                                <p class="card-text"><strong>Email:</strong> {{ usuario.email }}</p>
+                                <div class="text-center">
+                                    <a href="{% url 'administradores_maestros_detalle' id=usuario.id %}"
+                                       class="btn btn-primary">Detalles y editar directivo</a>
+                                    {% if usuario.credencial.estado_credencial == 'activa' %}
+                                        <a href="{% url 'administradores_desactivar_credencial' id=usuario.credencial.id %}"
+                                           class="btn btn-danger" data-bs-toggle="modal"
+                                           data-bs-target="#modalConfirmacion{{ usuario.credencial.id }}">Desactivar
+                                            credencial</a>
+                                    {% endif %}
+                                    {% if usuario.credencial.estado_credencial == 'inactiva' %}
+                                        <a href="{% url 'administradores_activar_credencial' id=usuario.credencial.id %}"
+                                           class="btn btn-success">Activar credencial</a>
+                                    {% endif %}
+                                </div>
+                                <div class="modal fade" id="modalConfirmacion{{ usuario.credencial.id }}"
+                                     tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalConfirmacionLabel">
+                                                    Confirmación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro de que deseas desactivar la credencial?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Cancelar
+                                                </button>
+                                                <a href="{% url 'administradores_desactivar_credencial' id=usuario.credencial.id %}"
+                                                   class="btn btn-danger">Desactivar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    {% for usuario in usuarios %}
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ usuario.nombre }} {{ usuario.apellidos }}</h5>
+                                    <hr>
+                                    <p><strong class="text-primary">Especialidad:</strong> {{ usuario.especialidad }}</p>
+                                    <p><strong class="text-dark">Email:</strong> {{ usuario.email }}</p>
+                                    <hr>
+                                    <p><strong>Estado credencial:</strong>
+                                        {% if usuario.credencial.estado_credencial == 'activa' %}
+                                            <span class="badge bg-success">{{ usuario.credencial.estado_credencial }}</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">{{ usuario.credencial.estado_credencial }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <div class="text-center">
+                                        <a href="{% url 'administradores_maestros_detalle' id=usuario.id %}"
+                                           class="btn btn-primary">Detalles y editar directivo</a>
+                                        {% if usuario.credencial.estado_credencial == 'activa' %}
+                                            <a href="#" class="btn btn-danger" data-bs-toggle="modal"
+                                               data-bs-target="#modalConfirmacion{{ usuario.credencial.id }}">Desactivar
+                                                credencial</a>
+                                        {% endif %}
+                                        {% if usuario.credencial.estado_credencial == 'inactiva' %}
+                                            <a href="{% url 'administradores_activar_credencial' id=usuario.credencial.id %}"
+                                               class="btn btn-success">Activar credencial</a>
+                                        {% endif %}
+                                    </div>
+                                    <!-- Modal de confirmación -->
+                                    <div class="modal fade" id="modalConfirmacion{{ usuario.credencial.id }}"
+                                         tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalConfirmacionLabel">
+                                                        Confirmación</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    ¿Estás seguro de que deseas desactivar la credencial?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancelar
+                                                    </button>
+                                                    <a href="{% url 'administradores_desactivar_credencial' id=usuario.credencial.id %}"
+                                                       class="btn btn-danger">Desactivar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

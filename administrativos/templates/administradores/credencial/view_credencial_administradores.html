@@ -1,0 +1,84 @@
+{% extends 'administradores/layouts/view_home_administradores.html' %}
+
+{% load static %}
+{% block content %}
+
+    <div class="card-header mb-1 bg-success">
+        <h1 class="text-center">Tus credencial</h1>
+    </div>
+    <div class="contenedor">
+
+        {% if permite_visualizar == 'activa' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>¡Felicidades!</strong> Ya puedes descargar tu tarjeta de estudiante.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div>
+
+
+            </div>
+            <div class="cards-grid">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front"
+                             style="background-image: url('https://img.freepik.com/vector-gratis/fondo-monocromatico-blanco-estilo-papel_52683-66443.jpg?w=1380&t=st=1679244857~exp=1679245457~hmac=0dbb707c5834d85db8ddd325cec0e5c45a061e33a4e88cb8570c15694b4f8f0a');">
+                            <div class="card-content card-content1">
+                                <div class="contenedor_img">
+                                    <p class="nombre_universidad">Universidad Politécnica de Tapachula</p>
+                                    <img src="{% static 'administradores/home/img/LogoUPTap.png' %}" class="profile-pic"
+                                         alt="">
+                                </div>
+                                <div class="contenedor_datos">
+                                    <div id="qrcode-2"></div>
+                                    <p class="dato">Tipo de sangre: <span
+                                            class="dato_remarcado">{{ tipo_sangre }}</span></p>
+                                    <p class="dato">Teléfono de emergencia: <span
+                                            class="dato_remarcado">{{ telefono_contacto_emergencia }}</span>
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <img src="{% static 'administradores/home/img/dgutyp.png' %}" class="img_asset"
+                                         alt=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flip-card-back"
+                             style="background-image: url('https://img.freepik.com/vector-gratis/fondo-monocromatico-blanco-estilo-papel_52683-66443.jpg?w=1380&t=st=1679244857~exp=1679245457~hmac=0dbb707c5834d85db8ddd325cec0e5c45a061e33a4e88cb8570c15694b4f8f0a'); ">
+
+                            <div class="student-card-content">
+                                <img src="{{ imagen }}" alt="Foto de perfil"
+                                     class="profile-pic">
+                                <div class="student-info">
+                                    <h2 class="student-title">Administrador</h2>
+                                    <p class="student-name">{{ alumno.nombre }} {{ apellidos }}</p>
+                                    <p class="student-id">{{ departamento }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% else %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>¡Lo sentimos!</strong> Aún no puedes descargar tu tarjeta de estudiante.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+    <script type="text/javascript">
+        const URL = "{% url 'qr' id_usuario=id %}"
+        var qrcode = new QRCode(document.getElementById("qrcode-2"), {
+            text: URL,
+            width: 128,
+            height: 128,
+            colorDark: "#5868bf",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    </script>
+{% endblock %}

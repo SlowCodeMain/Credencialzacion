@@ -1,0 +1,75 @@
+{% extends 'administradores/layouts/view_home_administradores.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <main class="container text-center">
+        <h1 class="text-white mb-5">Solicitudes</h1>
+
+        {% if no_solicitud_datos_no %}
+            <div class="alert alert-danger">
+                <h1 class="text-black-50">{{ mensaje }}</h1>
+            </div>
+        {% endif %}
+
+        {% if no_solicitud_pendiente %}
+            <div class="alert alert-danger">
+                <h1 class="text-black-50">{{ mensaje }}</h1>
+            </div>
+        {% endif %}
+
+        {% if no_solicitud_credencial_activa %}
+            <div class="alert alert-danger">
+                <h1 class="text-black-50">{{ mensaje }}</h1>
+            </div>
+        {% endif %}
+
+        {% if solicitud_credencial %}
+            <div class="alert alert-info">
+                <h1 class="text-black-50">{{ mensaje }}</h1>
+                <form action="" method="post" class="d-inline-block mt-5">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Solicitar credencial</button>
+                </form>
+            </div>
+        {% endif %}
+
+        {% if solicitud_enviada %}
+            <div class="alert alert-success">
+                <h1 class="text-black-50">{{ mensaje }}</h1>
+            </div>
+        {% endif %}
+
+
+        <div class="container">
+            <div class="mt-4">
+                <h2 class="text-primary">Historial de solicitudes</h2>
+                {% if solicitudes %}
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Tipo de solicitud</th>
+                            <th scope="col">Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for solicitud in solicitudes %}
+                            <tr>
+                                <td>{{ solicitud.fecha_solicitud }}</td>
+                                <td>{{ solicitud.tipo_solicitud }}</td>
+                                <td>{{ solicitud.estado }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="alert alert-info">
+                        <h2 class="text-secondary">No se han realizado solicitudes</h2>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

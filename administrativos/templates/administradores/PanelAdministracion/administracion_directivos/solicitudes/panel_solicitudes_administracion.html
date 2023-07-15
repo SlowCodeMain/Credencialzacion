@@ -1,0 +1,41 @@
+{% extends 'administradores/layouts/view_home_administradores.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5 text-white text-center">Solicitudes de directivos pendientes</h1>
+
+{#        <form class="mt-4 mb-4" method="GET">#}
+{#            <div class="input-group">#}
+{#                <input type="text" class="form-control" name="matricula" placeholder="Buscar por matrícula">#}
+{#                <div class="input-group-append">#}
+{#                    <button class="btn btn-primary" type="submit">Buscar</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </form>#}
+
+        {% if no_solicitudes %}
+            <div class="alert alert-info mt-4 text-center" role="alert">
+
+
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+
+                {{ no_solicitudes }}
+            </div>
+        {% endif %}
+
+        {% for  directivo in administradores_solicitudes_pendientes %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">{{ directivo.nombre }} {{ directivo.apellidos }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ directivo.puesto }}</h6>
+                    <p class="card-text">{{ directivo.email }}</p>
+                    <p class="card-text">{{ directivo.carrera }}</p>
+
+                    <a href="{% url 'administradores_aceptar_credencial' pk=directivo.id %}" class="btn btn-primary mr-2">Aceptar</a>
+                    <a href="{% url 'administradores_rechazar_credencial' pk=directivo.id %}" class="btn btn-danger">Rechazar</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
